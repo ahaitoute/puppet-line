@@ -13,6 +13,7 @@ Clone this repo to your Puppet modules directory
 ## Usage
 
 Usage example: Add 'dummy' to the list of automatically loaded modules
+
     file { "/etc/modules": ensure => present, }
 
     line { dummy_module:
@@ -21,6 +22,7 @@ Usage example: Add 'dummy' to the list of automatically loaded modules
     }
 
 Usage example: Remove 'dummy' from the list of automatically loaded modules
+
     file { "/etc/modules": ensure => present, }
 
     line { dummy_module:
@@ -30,6 +32,7 @@ Usage example: Remove 'dummy' from the list of automatically loaded modules
     }
 
 Usage example: Comment 'dummy' from the list of automatically loaded modules
+
     file { "/etc/modules": ensure => present, }
 
     line { dummy_module:
@@ -39,6 +42,7 @@ Usage example: Comment 'dummy' from the list of automatically loaded modules
     }
 
 Usage example: Uncomment 'dummy' from the list of automatically loaded modules
+
     file { "/etc/modules": ensure => present, }
 
     line { dummy_module:
@@ -56,4 +60,5 @@ Usage example: Uncomment 'dummy' from the list of automatically loaded modules
 5. Create new Pull Request
 
 ## Credits
+
 I'd like to thank http://projects.puppetlabs.com/projects/1/wiki/Simple_Text_Patterns for providing the necessary puppet-code. I only collected the code into a module.
