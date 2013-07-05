@@ -1,4 +1,4 @@
-define line($file, $line, $ensure = 'present') {
+define line($file, $line, $ensure = 'present', $comment = '#') {
   case $ensure {
     default : { err ( "unknown ensure value ${ensure}" ) }
     present: {
@@ -12,13 +12,13 @@ define line($file, $line, $ensure = 'present') {
       }
     }
     uncomment: {
-      exec { "/bin/sed -i -e'/${line}/s/#\+//' '${file}'" :
-        onlyif => "/bin/grep '${line}' '${file}' | /bin/grep '^#' | /usr/bin/wc -l"
+      exec { "/bin/sed -i -e'/${line}/s/${comment}\+//' '${file}'" :
+        onlyif => "/bin/grep '${line}' '${file}' | /bin/grep '^${comment}' | /usr/bin/wc -l"
       }
     }
     comment: {
-      exec { "/bin/sed -i -e'/${line}/s/\(.\+\)$/#\1/' '${file}'" :
-        onlyif => "/usr/bin/test `/bin/grep '${line}' '${file}' | /bin/grep -v '^#' | /usr/bin/wc -l` -ne 0"
+      exec { "/bin/sed -i -e'/${line}/s/\(.\+\)$/${comment}\1/' '${file}'" :
+        onlyif => "/usr/bin/test `/bin/grep '${line}' '${file}' | /bin/grep -v '^${comment}' | /usr/bin/wc -l` -ne 0"
       }
     }
   }
