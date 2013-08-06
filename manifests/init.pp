@@ -13,7 +13,7 @@ define line($file, $line, $ensure = 'present', $comment = '#') {
     }
     uncomment: {
       exec { "/bin/sed -i -e'/${line}/s/${comment}\+//' '${file}'" :
-        onlyif => "/bin/grep '${line}' '${file}' | /bin/grep '^${comment}' | /usr/bin/wc -l"
+        onlyif => "/usr/bin/test `/bin/grep '${line}' '${file}' | /bin/grep '^${comment}' | /usr/bin/wc -l` -ne 0"
       }
     }
     comment: {
