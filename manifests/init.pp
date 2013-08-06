@@ -13,12 +13,12 @@ define line($file, $line, $ensure = 'present', $comment = '#') {
     }
     uncomment: {
       exec { "/bin/sed -i -e'/${line}/s/${comment}\+//' '${file}'" :
-        onlyif => "/usr/bin/test `/bin/grep '${line}' '${file}' | /bin/grep '^${comment}' | /usr/bin/wc -l` -ne 0"
+        onlyif => "/bin/grep '^${comment}${line}' '${file}'"
       }
     }
     comment: {
       exec { "/bin/sed -i -e'/${line}/s/\(.\+\)$/${comment}\1/' '${file}'" :
-        onlyif => "/usr/bin/test `/bin/grep '${line}' '${file}' | /bin/grep -v '^${comment}' | /usr/bin/wc -l` -ne 0"
+        onlyif => "/bin/grep '^${line}' '${file}'"
       }
     }
   }
