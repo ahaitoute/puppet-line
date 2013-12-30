@@ -1,24 +1,27 @@
+# http://www.puppetcookbook.com/posts/set-global-exec-path.html
+Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
+
 define line($file, $line, $ensure = 'present', $comment = '#') {
   case $ensure {
     default : { err ( "unknown ensure value ${ensure}" ) }
     present: {
-      exec { "/bin/echo '${line}' >> '${file}'":
-        unless => "/bin/grep -qFx '${line}' '${file}'"
+      exec { "echo '${line}' >> '${file}'":
+        unless => "grep -qFx '${line}' '${file}'"
       }
     }
     absent: {
-      exec { "/bin/grep -vFx '${line}' '${file}' | /usr/bin/tee '${file}' > /dev/null 2>&1":
-        onlyif => "/bin/grep -qFx '${line}' '${file}'"
+      exec { "grep -vFx '${line}' '${file}' | tee '${file}' > /dev/null 2>&1":
+        onlyif => "grep -qFx '${line}' '${file}'"
       }
     }
     uncomment: {
-      exec { "/bin/sed -i -e'/${line}/s/${comment}\\+//' '${file}'" :
-        onlyif => "/bin/grep '${line}' '${file}' | /bin/grep '^${comment}' | /usr/bin/wc -l"
+      exec { "sed -i -e'/${line}/s/${comment}\\+//' '${file}'" :
+        onlyif => "grep '${line}' '${file}' | grep '^${comment}' | wc -l"
       }
     }
     comment: {
-      exec { "/bin/sed -i -e'/${line}/s/\\(.\\+\\)$/${comment}\\1/' '${file}'" :
-        onlyif => "/usr/bin/test `/bin/grep '${line}' '${file}' | /bin/grep -v '^${comment}' | /usr/bin/wc -l` -ne 0"
+      exec { "sed -i -e'/${line}/s/\\(.\\+\\)$/${comment}\\1/' '${file}'" :
+        onlyif => "test `grep '${line}' '${file}' | grep -v '^${comment}' | wc -l` -ne 0"
       }
     }
   }
